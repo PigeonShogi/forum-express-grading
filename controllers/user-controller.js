@@ -130,17 +130,27 @@ const userController = {
     ])
       .then(([restaurant, like]) => {
         if (!restaurant) throw new Error("Restaurant didn't exist!")
-        if (like) throw new Error('You have liked')
-        console.log('=============***************** addLike 路由可運作 *****************=============== restaurant: ', restaurant, 'like: ', like)
         return Like.create({
           userId: req.user.id,
           restaurantId
         })
       })
+      .then(() => res.redirect('back'))
       .catch(err => next(err))
   },
   removeLike: (req, res, next) => {
-    console.log('=============***************** removeLike 路由可運作 *****************===============')
+    return Like.findOne({
+      where: {
+        userId: req.user.id,
+        restaurantId: req.params.restaurantId
+      }
+    })
+      .then(like => {
+        if (!like) throw new Error('This is not your like restaurant!')
+        return like.destroy()
+      })
+      .then(() => res.redirect('back'))
+      .catch(err => next(err))
   }
 }
 
