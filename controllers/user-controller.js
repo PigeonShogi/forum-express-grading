@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const { imgurFileHandler } = require('../helpers/file-helpers')
-const { Comment, Favorite, Restaurant, User } = require('../models')
+const { Comment, Favorite, Like, Restaurant, User } = require('../models')
 const userController = {
   signUpPage: (req, res) => {
     res.render('signup')
@@ -118,7 +118,26 @@ const userController = {
       .catch(err => next(err))
   },
   addLike: (req, res, next) => {
-    console.log('=============***************** addLike 路由可運作 *****************===============')
+    const { restaurantId } = req.params
+    return Promise.all([
+      Restaurant.findByPk(restaurantId),
+      Like.findOne({
+        where: {
+          userId: req.user.id,
+          restaurantId
+        }
+      })
+    ])
+      .then(([restaurant, like]) => {
+        if (!restaurant) throw new Error("Restaurant didn't exist!")
+        if (like) throw new Error('You have liked')
+        console.log('=============***************** addLike 路由可運作 *****************=============== restaurant: ', restaurant, 'like: ', like)
+        return Like.create({
+          userId: req.user.id,
+          restaurantId
+        })
+      })
+      .catch(err => next(err))
   },
   removeLike: (req, res, next) => {
     console.log('=============***************** removeLike 路由可運作 *****************===============')
