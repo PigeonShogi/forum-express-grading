@@ -116,6 +116,12 @@ const userController = {
       })
       .then(() => res.redirect('back'))
       .catch(err => next(err))
+  },
+  addLike: (req, res, next) => {
+    console.log('=============***************** addLike 路由可運作 *****************===============')
+  },
+  removeLike: (req, res, next) => {
+    console.log('=============***************** removeLike 路由可運作 *****************===============')
   }
 }
 

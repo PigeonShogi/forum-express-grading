@@ -26,7 +26,10 @@
       <button type="submit" class="btn btn-primary">加到最愛</button>
     </form>
     {{/if}}
-    </div>
+    <form action="/like/{{restaurant.id}}" method="POST" style="display: contents;">
+      <button type="submit" class="btn btn-primary m-1">Like</button>
+    </form>
+  </div>
     <hr>
 </div>
 {{!-- Comment --}}
