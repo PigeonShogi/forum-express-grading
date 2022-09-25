@@ -37,6 +37,7 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
+    // if (Number(req.params.id) !== req.user.id) { res.redirect('back') }
     return Promise.all([
       User.findByPk(req.params.id, { raw: true }),
       Comment.findAndCountAll({
